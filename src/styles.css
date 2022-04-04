@@ -1,6 +1,7 @@
 body,
 html {
 	min-height: 100vh;
+	user-select: none;
 }
 
 .height-calendar {
@@ -57,4 +58,14 @@ html {
 }
 .react-datetime-picker__wrapper {
 	border: 0px solid gray !important;
+}
+
+/* FAB */
+.fab {
+	position: fixed;
+	font-size: xx-large;
+	bottom: 0;
+	margin: 2rem;
+	right: 0;
+	transition: all 0.2s ease-in-out;
 }

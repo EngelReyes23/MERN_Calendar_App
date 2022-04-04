@@ -2,9 +2,11 @@ import moment from "moment";
 import "moment/locale/es";
 import { useState } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
-import "react-big-calendar/lib/css/react-big-calendar.css";
-//
+import { useDispatch, useSelector } from "react-redux";
+import { eventSetActive } from "../../actions/calendar";
+import { openModal } from "../../actions/ui";
 import { messages } from "../../helpers/calendar-messages-es";
+import { AddNewFab } from "../ui/AddNewFab";
 import { Navbar } from "../ui/Navbar";
 import { CalendarEvent } from "./CalendarEvent";
 import { CalendarModal } from "./CalendarModal";
@@ -27,18 +29,27 @@ const events = [
 ];
 
 export const CalendarScreen = () => {
+	//#region Redux
+	const { isModalOpen } = useSelector((state) => state.ui);
+	const dispatch = useDispatch();
+
+	//#endregion Redux
+
 	//#region State
 	const [calendarView, setCalendarView] = useState(
 		localStorage.getItem("calendarView") || "month"
 	);
 
 	//#region Métodos para los eventos del calendario
-	const onDoubleClick = (e) => {
-		console.log(e);
-	};
+	// const onDoubleClick = (e) => {
+	// 	console.log(e);
+	// 	dispatch(openModal());
+	// };
 
 	const onSelect = (e) => {
 		console.log(e);
+		dispatch(eventSetActive(e));
+		dispatch(openModal());
 	};
 
 	const onViewChange = (e) => {
@@ -71,7 +82,7 @@ export const CalendarScreen = () => {
 							messages={messages}
 							eventPropGetter={eventStyleGetter}
 							components={{ event: CalendarEvent }}
-							onDoubleClickEvent={onDoubleClick}
+							// onDoubleClickEvent={onDoubleClick}
 							onSelectEvent={onSelect}
 							onView={onViewChange}
 							view={calendarView}
@@ -79,8 +90,10 @@ export const CalendarScreen = () => {
 						{/* </div> */}
 					</div>
 				</div>
-			</div>
-			<CalendarModal />
+				<AddNewFab isOpen={isModalOpen} />
+			</div>{" "}
+			{/* Modal */}
+			<CalendarModal isOpen={isModalOpen} />
 		</div>
 	);
 };

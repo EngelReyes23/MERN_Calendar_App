@@ -3,7 +3,11 @@ import { useState } from "react";
 import DateTimePicker from "react-datetime-picker/dist/entry.nostyle";
 import { useForm } from "react-hook-form";
 import Modal from "react-modal";
+import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
+import { eventSetActive } from "../../actions/calendar";
+//
+import { closeModal } from "../../actions/ui";
 
 const customStyles = {
 	content: {
@@ -20,7 +24,15 @@ Modal.setAppElement("#root");
 // Fecha inicial para el input
 const dateNow = moment().minutes(0).seconds(0).add(1, "hours");
 
-export const CalendarModal = () => {
+export const CalendarModal = ({ isOpen }) => {
+	//#region Redux
+	const dispatch = useDispatch();
+
+	// TODO: obtener correctamente los valores
+	const { activeEvent } = useSelector((state) => state.calendar);
+
+	//#endregion Redux
+
 	//#region States
 	// Fecha inicial para el input
 	const [startDate, setStartDate] = useState(dateNow.toDate());
@@ -40,16 +52,18 @@ export const CalendarModal = () => {
 		defaultValues: {
 			startDate: startDate,
 			endDate: endDate,
-			title: "",
-			notes: "",
+			title: activeEvent?.title || "",
+			notes: activeEvent?.notes || "",
 		},
 	});
 	//#endregion States
 
 	//#region Methods
 
-	const closeModal = () => {
+	const handleCloseModal = () => {
 		// TODO: Cerrar modal
+		dispatch(eventSetActive(null));
+		dispatch(closeModal());
 	};
 
 	const onSubmit = (data, e) => {
@@ -64,7 +78,7 @@ export const CalendarModal = () => {
 		console.log(data);
 		e.target.reset();
 		setFocus("title");
-		closeModal();
+		handleCloseModal();
 	};
 
 	//#endregion Methods
@@ -85,12 +99,13 @@ export const CalendarModal = () => {
 
 	return (
 		<Modal
-			isOpen={true}
+			isOpen={isOpen}
 			style={customStyles}
 			contentLabel="Example Modal"
 			className="modal"
 			closeTimeoutMS={200}
 			overlayClassName="modal-fondo"
+			onRequestClose={handleCloseModal}
 		>
 			<h1> Nuevo evento </h1>
 			<hr />
