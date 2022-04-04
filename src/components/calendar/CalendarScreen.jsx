@@ -1,10 +1,12 @@
 import moment from "moment";
 import "moment/locale/es";
+import { useState } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 //
 import { messages } from "../../helpers/calendar-messages-es";
 import { Navbar } from "../ui/Navbar";
+import { CalendarEvent } from "./CalendarEvent";
 
 moment.locale("es");
 const localizer = momentLocalizer(moment);
@@ -16,13 +18,35 @@ const events = [
 		end: moment().add(2, "hours").toDate(),
 		bgColor: "royalblue",
 		notes: "This is a note",
+		user: {
+			_id: "5e9f9f9f9f9f9f9f9f9f9f9",
+			name: "Juan Perez",
+		},
 	},
 ];
 
 export const CalendarScreen = () => {
-	const eventStyleGetter = (event, start, end, isSelected) => {
-		console.log(event, start, end, isSelected);
+	//#region State
+	const [calendarView, setCalendarView] = useState(
+		localStorage.getItem("calendarView") || "month"
+	);
 
+	//#region Métodos para los eventos del calendario
+	const onDoubleClick = (e) => {
+		console.log(e);
+	};
+
+	const onSelect = (e) => {
+		console.log(e);
+	};
+
+	const onViewChange = (e) => {
+		setCalendarView(e);
+		localStorage.setItem("calendarView", e);
+	};
+	//#endregion Métodos para los eventos del calendario
+
+	const eventStyleGetter = (event, start, end, isSelected) => {
 		const style = {
 			backgroundColor: event.bgColor,
 			borderRadius: "0px",
@@ -30,9 +54,7 @@ export const CalendarScreen = () => {
 			color: "white",
 		};
 
-		return {
-			style,
-		};
+		return { style };
 	};
 
 	return (
@@ -47,6 +69,11 @@ export const CalendarScreen = () => {
 							events={events}
 							messages={messages}
 							eventPropGetter={eventStyleGetter}
+							components={{ event: CalendarEvent }}
+							onDoubleClickEvent={onDoubleClick}
+							onSelectEvent={onSelect}
+							onView={onViewChange}
+							view={calendarView}
 						/>
 						{/* </div> */}
 					</div>
