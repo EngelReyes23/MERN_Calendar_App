@@ -4,12 +4,6 @@ html {
 	user-select: none;
 }
 
-.height-calendar {
-	display: flex;
-	flex-direction: column;
-	height: 100vh;
-}
-
 /* Modal */
 /* Modal */
 .ReactModalPortal > div {

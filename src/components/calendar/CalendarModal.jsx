@@ -1,12 +1,12 @@
 import moment from "moment";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DateTimePicker from "react-datetime-picker/dist/entry.nostyle";
 import { useForm } from "react-hook-form";
 import Modal from "react-modal";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
-import { eventSetActive } from "../../actions/calendar";
 //
+import { eventAddNew, eventSetActive } from "../../actions/calendar";
 import { closeModal } from "../../actions/ui";
 
 const customStyles = {
@@ -47,20 +47,19 @@ export const CalendarModal = ({ isOpen }) => {
 		handleSubmit,
 		setValue,
 		formState: { errors },
-		setFocus,
-	} = useForm({
-		defaultValues: {
-			startDate: startDate,
-			endDate: endDate,
-			title: activeEvent?.title || "",
-			notes: activeEvent?.notes || "",
-		},
-	});
+		getValues,
+		reset,
+	} = useForm();
 	//#endregion States
+
+	useEffect(() => {
+		reset(activeEvent || {});
+	}, [activeEvent?.title]);
 
 	//#region Methods
 
 	const handleCloseModal = () => {
+		console.log("getValues", getValues());
 		// TODO: Cerrar modal
 		dispatch(eventSetActive(null));
 		dispatch(closeModal());
@@ -77,7 +76,16 @@ export const CalendarModal = ({ isOpen }) => {
 		}
 		console.log(data);
 		e.target.reset();
-		setFocus("title");
+		dispatch(
+			eventAddNew({
+				...data,
+				id: data.id || new Date().getTime(),
+				user: {
+					_id: "5e9f9f9f9f9f9f9f9f9f9f9",
+					name: "Juan Perez",
+				},
+			})
+		);
 		handleCloseModal();
 	};
 

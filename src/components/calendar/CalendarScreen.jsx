@@ -3,6 +3,7 @@ import "moment/locale/es";
 import { useState } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import { useDispatch, useSelector } from "react-redux";
+//
 import { eventSetActive } from "../../actions/calendar";
 import { openModal } from "../../actions/ui";
 import { messages } from "../../helpers/calendar-messages-es";
@@ -75,7 +76,6 @@ export const CalendarScreen = () => {
 			<div className="container">
 				<div className="row">
 					<div className="col-md-12 min-vh-100 mb-5">
-						{/* <div className="height-calendar"> */}
 						<Calendar
 							localizer={localizer}
 							events={events}
@@ -87,7 +87,6 @@ export const CalendarScreen = () => {
 							onView={onViewChange}
 							view={calendarView}
 						/>
-						{/* </div> */}
 					</div>
 				</div>
 				<AddNewFab isOpen={isModalOpen} />
