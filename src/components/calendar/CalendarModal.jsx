@@ -6,7 +6,11 @@ import Modal from "react-modal";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 //
-import { eventAddNew, eventSetActive } from "../../actions/calendar";
+import {
+	eventAddNew,
+	eventSetActive,
+	eventUpdate,
+} from "../../actions/calendar";
 import { closeModal } from "../../actions/ui";
 
 const customStyles = {
@@ -28,7 +32,6 @@ export const CalendarModal = () => {
 	//#region Redux
 	const dispatch = useDispatch();
 
-	// TODO: obtener correctamente los valores
 	const { activeEvent } = useSelector((state) => state.calendar);
 
 	//#endregion Redux
@@ -82,16 +85,21 @@ export const CalendarModal = () => {
 			);
 			return;
 		}
-		dispatch(
-			eventAddNew({
-				...data,
-				id: data.id || new Date().getTime(),
-				user: {
-					_id: "5e9f9f9f9f9f9f9f9f9f9f9",
-					name: "Engel Reyes",
-				},
-			})
-		);
+
+		if (!activeEvent) {
+			dispatch(
+				eventAddNew({
+					...data,
+					id: data.id || new Date().getTime(),
+					user: {
+						_id: "5e9f9f9f9f9f9f9f9f9f9f9",
+						name: "Engel Reyes",
+					},
+				})
+			);
+		} else {
+			dispatch(eventUpdate(data));
+		}
 		handleCloseModal();
 	};
 
