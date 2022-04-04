@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux";
 //
 import { openModal } from "../../actions/ui";
 
-export const AddNewFab = ({ isOpen }) => {
+export const AddNewFab = () => {
 	const dispatch = useDispatch();
 
 	const handleClick = () => {
@@ -14,11 +14,7 @@ export const AddNewFab = ({ isOpen }) => {
 			onClick={handleClick}
 			className="btn btn-primary rounded-circle fab"
 		>
-			{isOpen ? (
-				<i className="fas fa-times"></i>
-			) : (
-				<i className="fas fa-plus"></i>
-			)}
+			<i className="fas fa-plus"></i>
 		</button>
 	);
 };

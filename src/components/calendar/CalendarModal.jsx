@@ -24,7 +24,7 @@ Modal.setAppElement("#root");
 // Fecha inicial para el input
 const dateNow = moment().minutes(0).seconds(0).add(1, "hours");
 
-export const CalendarModal = ({ isOpen }) => {
+export const CalendarModal = () => {
 	//#region Redux
 	const dispatch = useDispatch();
 
@@ -39,7 +39,7 @@ export const CalendarModal = ({ isOpen }) => {
 
 	// La fecha final se establece después de la fecha inicial
 	const [endDate, setEndDate] = useState(
-		moment(startDate).add(1, "days").hour(13).toDate()
+		moment(startDate).add(1, "hour").toDate()
 	);
 
 	const {
@@ -47,26 +47,34 @@ export const CalendarModal = ({ isOpen }) => {
 		handleSubmit,
 		setValue,
 		formState: { errors },
-		getValues,
 		reset,
-	} = useForm();
-	//#endregion States
+	} = useForm({
+		defaultValues: {
+			start: startDate,
+			end: endDate,
+		},
+	});
 
 	useEffect(() => {
-		reset(activeEvent || {});
-	}, [activeEvent?.title]);
+		if (activeEvent) {
+			reset(activeEvent);
+			setStartDate(activeEvent.start);
+			setEndDate(activeEvent.end);
+		}
+	}, [activeEvent, reset]);
+
+	//#endregion States
 
 	//#region Methods
 
 	const handleCloseModal = () => {
-		console.log("getValues", getValues());
-		// TODO: Cerrar modal
 		dispatch(eventSetActive(null));
 		dispatch(closeModal());
 	};
 
-	const onSubmit = (data, e) => {
-		if (moment(data.startDate).isSameOrAfter(data.endDate)) {
+	const onSubmit = (data) => {
+		console.log(data);
+		if (moment(data.start).isSameOrAfter(data.end)) {
 			Swal.fire(
 				"Error",
 				"La fecha final debe ser mayor a la fecha inicial",
@@ -74,15 +82,13 @@ export const CalendarModal = ({ isOpen }) => {
 			);
 			return;
 		}
-		console.log(data);
-		e.target.reset();
 		dispatch(
 			eventAddNew({
 				...data,
 				id: data.id || new Date().getTime(),
 				user: {
 					_id: "5e9f9f9f9f9f9f9f9f9f9f9",
-					name: "Juan Perez",
+					name: "Engel Reyes",
 				},
 			})
 		);
@@ -94,20 +100,18 @@ export const CalendarModal = ({ isOpen }) => {
 	//#region Handles
 	const handleStartDateChange = (e) => {
 		setStartDate(e);
-		setValue("startDate", e);
-		console.log(e);
+		setValue("start", e);
 	};
 
 	const handleEndDateChange = (e) => {
 		setEndDate(e);
-		setValue("endDate", e);
-		console.log(e);
+		setValue("end", e);
 	};
 	//#endregion Handles
 
 	return (
 		<Modal
-			isOpen={isOpen}
+			isOpen={true}
 			style={customStyles}
 			contentLabel="Example Modal"
 			className="modal"
@@ -130,11 +134,10 @@ export const CalendarModal = ({ isOpen }) => {
 				<div className="form-group">
 					<label>Fecha y hora fin</label>
 					<DateTimePicker
-						name="endDate"
 						className="form-control"
-						onChange={handleEndDateChange}
 						minDate={startDate}
 						value={endDate}
+						onChange={handleEndDateChange}
 					/>
 				</div>
 

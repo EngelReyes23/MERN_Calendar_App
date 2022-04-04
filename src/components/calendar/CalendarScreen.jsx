@@ -15,25 +15,14 @@ import { CalendarModal } from "./CalendarModal";
 moment.locale("es");
 const localizer = momentLocalizer(moment);
 
-const events = [
-	{
-		title: "All Day Event",
-		start: moment().toDate(),
-		end: moment().add(2, "hours").toDate(),
-		bgColor: "royalblue",
-		notes: "This is a note",
-		user: {
-			_id: "5e9f9f9f9f9f9f9f9f9f9f9",
-			name: "Juan Perez",
-		},
-	},
-];
-
 export const CalendarScreen = () => {
 	//#region Redux
-	const { isModalOpen } = useSelector((state) => state.ui);
-	const dispatch = useDispatch();
+	const {
+		ui: { isModalOpen },
+		calendar: { eventList },
+	} = useSelector((state) => state);
 
+	const dispatch = useDispatch();
 	//#endregion Redux
 
 	//#region State
@@ -42,15 +31,12 @@ export const CalendarScreen = () => {
 	);
 
 	//#region Métodos para los eventos del calendario
-	// const onDoubleClick = (e) => {
-	// 	console.log(e);
-	// 	dispatch(openModal());
-	// };
+	const onDoubleClick = () => {
+		dispatch(openModal());
+	};
 
 	const onSelect = (e) => {
-		console.log(e);
 		dispatch(eventSetActive(e));
-		dispatch(openModal());
 	};
 
 	const onViewChange = (e) => {
@@ -59,7 +45,7 @@ export const CalendarScreen = () => {
 	};
 	//#endregion Métodos para los eventos del calendario
 
-	const eventStyleGetter = (event, start, end, isSelected) => {
+	const eventStyleGetter = (event) => {
 		const style = {
 			backgroundColor: event.bgColor,
 			borderRadius: "0px",
@@ -77,22 +63,22 @@ export const CalendarScreen = () => {
 				<div className="row">
 					<div className="col-md-12 min-vh-100 mb-5">
 						<Calendar
+							events={eventList}
 							localizer={localizer}
-							events={events}
 							messages={messages}
 							eventPropGetter={eventStyleGetter}
 							components={{ event: CalendarEvent }}
-							// onDoubleClickEvent={onDoubleClick}
+							onDoubleClickEvent={onDoubleClick}
 							onSelectEvent={onSelect}
 							onView={onViewChange}
 							view={calendarView}
 						/>
 					</div>
 				</div>
-				<AddNewFab isOpen={isModalOpen} />
+				<AddNewFab />
 			</div>{" "}
 			{/* Modal */}
-			<CalendarModal isOpen={isModalOpen} />
+			{isModalOpen && <CalendarModal />}
 		</div>
 	);
 };
