@@ -3,6 +3,7 @@ import { useState } from "react";
 import DateTimePicker from "react-datetime-picker/dist/entry.nostyle";
 import { useForm } from "react-hook-form";
 import Modal from "react-modal";
+import Swal from "sweetalert2";
 
 const customStyles = {
 	content: {
@@ -34,23 +35,39 @@ export const CalendarModal = () => {
 		handleSubmit,
 		setValue,
 		formState: { errors },
+		setFocus,
 	} = useForm({
 		defaultValues: {
-			startDate: "",
-			endDate: "",
+			startDate: startDate,
+			endDate: endDate,
 			title: "",
 			notes: "",
 		},
 	});
-
 	//#endregion States
 
+	//#region Methods
+
+	const closeModal = () => {
+		// TODO: Cerrar modal
+	};
+
 	const onSubmit = (data, e) => {
-		// e.preventDefault();
+		if (moment(data.startDate).isSameOrAfter(data.endDate)) {
+			Swal.fire(
+				"Error",
+				"La fecha final debe ser mayor a la fecha inicial",
+				"error"
+			);
+			return;
+		}
 		console.log(data);
 		e.target.reset();
-		e.target.title.focus();
+		setFocus("title");
+		closeModal();
 	};
+
+	//#endregion Methods
 
 	//#region Handles
 	const handleStartDateChange = (e) => {
@@ -90,6 +107,7 @@ export const CalendarModal = () => {
 				<div className="form-group">
 					<label>Fecha y hora fin</label>
 					<DateTimePicker
+						name="endDate"
 						className="form-control"
 						onChange={handleEndDateChange}
 						minDate={startDate}
@@ -102,7 +120,7 @@ export const CalendarModal = () => {
 					<label>Titulo y notas</label>
 					<input
 						type="text"
-						className="form-control"
+						className={`form-control ${errors.title && "is-invalid"}`}
 						placeholder="Título del evento"
 						autoComplete="off"
 						{...register("title", {
@@ -110,10 +128,13 @@ export const CalendarModal = () => {
 								value: true,
 								message: "El título es requerido",
 							},
+							minLength: {
+								value: 3,
+								message: "El título debe tener al menos 3 caracteres",
+							},
 						})}
 					/>
 					<small
-						id="emailHelp"
 						className={`form-text ${
 							errors.title ? "text-danger" : "text-muted"
 						}`}
@@ -125,15 +146,10 @@ export const CalendarModal = () => {
 				<div className="form-group">
 					<textarea
 						type="text"
-						className="form-control"
+						className={`form-control`}
 						placeholder="Notas"
 						rows="5"
-						{...register("notes", {
-							required: {
-								value: true,
-								message: "Las notas son requeridas",
-							},
-						})}
+						{...register("notes")}
 					></textarea>
 					<small
 						id="emailHelp"
@@ -141,7 +157,7 @@ export const CalendarModal = () => {
 							errors.notes ? "text-danger" : "text-muted"
 						}`}
 					>
-						{errors.notes ? errors.notes.message : "Información adicional"}
+						Información adicional
 					</small>
 				</div>
 
