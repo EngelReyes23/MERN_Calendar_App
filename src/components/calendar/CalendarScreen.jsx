@@ -7,6 +7,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import { messages } from "../../helpers/calendar-messages-es";
 import { Navbar } from "../ui/Navbar";
 import { CalendarEvent } from "./CalendarEvent";
+import { CalendarModal } from "./CalendarModal";
 
 moment.locale("es");
 const localizer = momentLocalizer(moment);
@@ -58,9 +59,9 @@ export const CalendarScreen = () => {
 	};
 
 	return (
-		<>
+		<div>
 			<Navbar />
-			<div className="container-fluid">
+			<div className="container">
 				<div className="row">
 					<div className="col-md-12 min-vh-100 mb-5">
 						{/* <div className="height-calendar"> */}
@@ -79,6 +80,7 @@ export const CalendarScreen = () => {
 					</div>
 				</div>
 			</div>
-		</>
+			<CalendarModal />
+		</div>
 	);
 };
