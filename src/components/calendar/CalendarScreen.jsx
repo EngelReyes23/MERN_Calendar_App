@@ -8,6 +8,7 @@ import { eventSetActive } from "../../actions/calendar";
 import { openModal } from "../../actions/ui";
 import { messages } from "../../helpers/calendar-messages-es";
 import { AddNewFab } from "../ui/AddNewFab";
+import { DeleteFab } from "../ui/DeleteFab";
 import { Navbar } from "../ui/Navbar";
 import { CalendarEvent } from "./CalendarEvent";
 import { CalendarModal } from "./CalendarModal";
@@ -19,7 +20,7 @@ export const CalendarScreen = () => {
 	//#region Redux
 	const {
 		ui: { isModalOpen },
-		calendar: { eventList },
+		calendar: { eventList, activeEvent },
 	} = useSelector((state) => state);
 
 	const dispatch = useDispatch();
@@ -33,6 +34,10 @@ export const CalendarScreen = () => {
 	//#region Métodos para los eventos del calendario
 	const onDoubleClick = () => {
 		dispatch(openModal());
+	};
+
+	const onSelectSlot = (e) => {
+		dispatch(eventSetActive(null));
 	};
 
 	const onSelect = (e) => {
@@ -66,16 +71,19 @@ export const CalendarScreen = () => {
 							events={eventList}
 							localizer={localizer}
 							messages={messages}
+							view={calendarView}
 							eventPropGetter={eventStyleGetter}
 							components={{ event: CalendarEvent }}
 							onDoubleClickEvent={onDoubleClick}
 							onSelectEvent={onSelect}
 							onView={onViewChange}
-							view={calendarView}
+							onSelectSlot={onSelectSlot}
+							selectable={true}
 						/>
 					</div>
 				</div>
-				<AddNewFab />
+
+				{activeEvent ? <DeleteFab /> : <AddNewFab />}
 			</div>{" "}
 			{/* Modal */}
 			{isModalOpen && <CalendarModal />}

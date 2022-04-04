@@ -55,11 +55,11 @@ html {
 }
 
 /* FAB */
+
 .fab {
 	position: fixed;
 	font-size: xx-large;
 	bottom: 0;
 	margin: 2rem;
 	right: 0;
-	transition: all 0.2s ease-in-out;
 }

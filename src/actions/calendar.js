@@ -15,7 +15,6 @@ export const eventUpdate = (event) => ({
 	payload: event,
 });
 
-export const eventDelete = (id) => ({
+export const eventDelete = () => ({
 	type: types.calendarDeleteEvent,
-	payload: id,
 });

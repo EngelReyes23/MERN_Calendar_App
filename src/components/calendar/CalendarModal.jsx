@@ -77,30 +77,34 @@ export const CalendarModal = () => {
 
 	const onSubmit = (data) => {
 		console.log(data);
-		if (moment(data.start).isSameOrAfter(data.end)) {
-			Swal.fire(
-				"Error",
-				"La fecha final debe ser mayor a la fecha inicial",
-				"error"
-			);
-			return;
-		}
+		if (data.end && data.start) {
+			if (moment(data.start).isSameOrAfter(data.end)) {
+				Swal.fire(
+					"Error",
+					"La fecha final debe ser mayor a la fecha inicial",
+					"error"
+				);
+				return;
+			}
 
-		if (!activeEvent) {
-			dispatch(
-				eventAddNew({
-					...data,
-					id: data.id || new Date().getTime(),
-					user: {
-						_id: "5e9f9f9f9f9f9f9f9f9f9f9",
-						name: "Engel Reyes",
-					},
-				})
-			);
+			if (!activeEvent) {
+				dispatch(
+					eventAddNew({
+						...data,
+						id: data.id || new Date().getTime(),
+						user: {
+							_id: "5e9f9f9f9f9f9f9f9f9f9f9",
+							name: "Engel Reyes",
+						},
+					})
+				);
+			} else {
+				dispatch(eventUpdate(data));
+			}
+			handleCloseModal();
 		} else {
-			dispatch(eventUpdate(data));
+			Swal.fire("Error", "Fechas no válidas", "error");
 		}
-		handleCloseModal();
 	};
 
 	//#endregion Methods
@@ -127,7 +131,7 @@ export const CalendarModal = () => {
 			overlayClassName="modal-fondo"
 			onRequestClose={handleCloseModal}
 		>
-			<h1> Nuevo evento </h1>
+			<h1> {activeEvent ? "Editar evento" : "Nuevo evento"} </h1>
 			<hr />
 			<form className="container" onSubmit={handleSubmit(onSubmit)}>
 				<div className="form-group">

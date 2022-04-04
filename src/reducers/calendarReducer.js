@@ -21,18 +21,21 @@ const initialState = {
 
 export const calendarReducer = (state = initialState, action) => {
 	switch (action.type) {
+		// Agrega un evento nuevo
 		case types.calendarAddEvent:
 			return {
 				...state,
 				eventList: [...state.eventList, action.payload],
 			};
 
+		// Establece el evento activo
 		case types.calendarSetActiveEvent:
 			return {
 				...state,
 				activeEvent: action.payload,
 			};
 
+		// Actualiza un evento
 		case types.calendarUpdateEvent:
 			return {
 				...state,
@@ -41,12 +44,14 @@ export const calendarReducer = (state = initialState, action) => {
 				),
 			};
 
+		// Elimina un evento
 		case types.calendarDeleteEvent:
 			return {
 				...state,
 				eventList: state.eventList.filter(
-					(event) => event.id !== action.payload
+					(event) => event.id !== state.activeEvent.id
 				),
+				activeEvent: null,
 			};
 
 		default:
