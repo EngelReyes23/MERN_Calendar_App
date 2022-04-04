@@ -3,8 +3,9 @@ import "moment/locale/es";
 import { useState } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import { useDispatch, useSelector } from "react-redux";
+import Swal from "sweetalert2";
 //
-import { eventSetActive } from "../../actions/calendar";
+import { eventDelete, eventSetActive } from "../../actions/calendar";
 import { openModal } from "../../actions/ui";
 import { messages } from "../../helpers/calendar-messages-es";
 import { AddNewFab } from "../ui/AddNewFab";
@@ -30,23 +31,39 @@ export const CalendarScreen = () => {
 	const [calendarView, setCalendarView] = useState(
 		localStorage.getItem("calendarView") || "month"
 	);
+	//#endregion State
 
 	//#region Métodos para los eventos del calendario
 	const onDoubleClick = () => {
 		dispatch(openModal());
 	};
 
+	// Establece el evento activo en null cuando se selecciona otra casilla
 	const onSelectSlot = (e) => {
 		dispatch(eventSetActive(null));
 	};
 
+	// Establece el evento activo
 	const onSelect = (e) => {
 		dispatch(eventSetActive(e));
 	};
 
+	// Establece la vista del calendario
 	const onViewChange = (e) => {
 		setCalendarView(e);
 		localStorage.setItem("calendarView", e);
+	};
+
+	// Elimina un evento
+	const handleEventDelete = () => {
+		Swal.fire({
+			title: "¿Estás seguro?",
+			text: "Una vez eliminado, no podrás recuperar este registro",
+			icon: "warning",
+			showCancelButton: true,
+		}).then((result) => {
+			result.isConfirmed && dispatch(eventDelete());
+		});
 	};
 	//#endregion Métodos para los eventos del calendario
 
@@ -64,7 +81,12 @@ export const CalendarScreen = () => {
 	return (
 		<div>
 			<Navbar />
-			<div className="container">
+			<div
+				className="container"
+				onKeyDown={({ code }) => {
+					code === "Delete" && handleEventDelete();
+				}}
+			>
 				<div className="row">
 					<div className="col-md-12 min-vh-100 mb-5">
 						<Calendar
@@ -83,8 +105,12 @@ export const CalendarScreen = () => {
 					</div>
 				</div>
 
-				{activeEvent ? <DeleteFab /> : <AddNewFab />}
-			</div>{" "}
+				{activeEvent ? (
+					<DeleteFab handleEventDelete={handleEventDelete} />
+				) : (
+					<AddNewFab />
+				)}
+			</div>
 			{/* Modal */}
 			{isModalOpen && <CalendarModal />}
 		</div>

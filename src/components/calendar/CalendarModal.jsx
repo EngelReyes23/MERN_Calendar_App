@@ -33,7 +33,6 @@ export const CalendarModal = () => {
 	const dispatch = useDispatch();
 
 	const { activeEvent } = useSelector((state) => state.calendar);
-
 	//#endregion Redux
 
 	//#region States
@@ -45,6 +44,7 @@ export const CalendarModal = () => {
 		moment(startDate).add(1, "hour").toDate()
 	);
 
+	// Valores del formulario
 	const {
 		register,
 		handleSubmit,
@@ -57,7 +57,9 @@ export const CalendarModal = () => {
 			end: endDate,
 		},
 	});
+	//#endregion States
 
+	//#region useEffect
 	useEffect(() => {
 		if (activeEvent) {
 			reset(activeEvent);
@@ -65,18 +67,16 @@ export const CalendarModal = () => {
 			setEndDate(activeEvent.end);
 		}
 	}, [activeEvent, reset]);
-
-	//#endregion States
+	//#endregion useEffect
 
 	//#region Methods
-
 	const handleCloseModal = () => {
 		dispatch(eventSetActive(null));
 		dispatch(closeModal());
 	};
 
 	const onSubmit = (data) => {
-		console.log(data);
+		// TODO: implementar de mejor manera
 		if (data.end && data.start) {
 			if (moment(data.start).isSameOrAfter(data.end)) {
 				Swal.fire(
@@ -106,7 +106,6 @@ export const CalendarModal = () => {
 			Swal.fire("Error", "Fechas no válidas", "error");
 		}
 	};
-
 	//#endregion Methods
 
 	//#region Handles
