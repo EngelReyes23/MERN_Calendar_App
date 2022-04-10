@@ -1,20 +1,31 @@
 import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+import Swal from 'sweetalert2';
+import { startRegister } from '../../actions/auth';
 
 export const Register = () => {
+  const dispatch = useDispatch();
+
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm();
 
-  const onSubmitRegister = (data) => {
-    console.log('🚀 ~ onSubmitRegister ~ data', data);
+  const onSubmit = (data) => {
+    //  dispatch()
+    if (data.password !== data.confirmPassword) {
+      Swal.fire('Error', 'Las contraseñas no coinciden', 'error');
+      return;
+    }
+    const { name, password, email } = data;
+    dispatch(startRegister({ name, password, email }));
   };
 
   return (
     <div className='col-md-6 login-form-2'>
       <h3>Registro</h3>
-      <form onSubmit={handleSubmit(onSubmitRegister)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className='form-group'>
           {errors.name && (
             <div className='invalid-feedback invalid-feedback d-block mb-1 text-white'>
