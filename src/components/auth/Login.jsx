@@ -1,6 +1,10 @@
 import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+import { startLogin } from '../../actions/auth';
 
 export const Login = () => {
+  const dispatch = useDispatch();
+
   const {
     register,
     formState: { errors },
@@ -12,15 +16,15 @@ export const Login = () => {
     },
   });
 
-  const onSubmitLogin = (data) => {
-    console.log('🚀 ~ onSubmitLogin ~ data', data);
+  const onSubmit = ({ email, password }) => {
+    dispatch(startLogin(email, password));
   };
 
   return (
     <div className='col-md-6 login-form-1'>
       <h3>Ingreso</h3>
 
-      <form onSubmit={handleSubmit(onSubmitLogin)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className='form-group'>
           {errors.email && (
             <div className='invalid-feedback d-block mb-1'>
