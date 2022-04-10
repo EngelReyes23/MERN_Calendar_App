@@ -6,24 +6,26 @@ import {
   Route,
   Routes,
 } from 'react-router-dom';
-import { StartRenewToken } from '../actions/auth';
 //
+import { StartRenewToken } from '../actions/auth';
 import { LoginScreen } from '../components/auth/LoginScreen';
 import { CalendarScreen } from '../components/calendar/CalendarScreen';
 import { Loading } from '../components/ui/Loading';
+import { PrivateRoute } from './PrivateRoute';
+import { PublicRoute } from './PublicRoute';
 
 export const AppRouter = () => {
+  //#region Redux
   const dispatch = useDispatch();
   const {
     auth: { isChecking },
     ui: { isLoading },
   } = useSelector((state) => state);
+  //#endregion Redux
 
   useEffect(() => {
     dispatch(StartRenewToken());
   }, []);
-
-  if (isChecking) return <Loading />;
 
   return (
     <Router>
@@ -31,9 +33,19 @@ export const AppRouter = () => {
       {isLoading && <Loading />}
 
       <Routes>
-        <Route path='/' element={<CalendarScreen />} />
+        <Route
+          path='/'
+          element={
+            <PrivateRoute isChecking={isChecking} component={CalendarScreen} />
+          }
+        />
 
-        <Route path='/login' element={<LoginScreen />} />
+        <Route
+          path='/login'
+          element={
+            <PublicRoute isChecking={isChecking} component={LoginScreen} />
+          }
+        />
 
         {/* Redirect */}
         <Route path='*' element={<Navigate to='/' />} />

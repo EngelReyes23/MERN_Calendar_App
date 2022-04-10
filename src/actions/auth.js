@@ -80,6 +80,7 @@ export const startRegister = (userData) => {
 };
 //#endregion REGISTER
 
+//#region TOKEN
 // Inicia el proceso de renovación de token
 export const StartRenewToken = () => {
   return async (dispatch) => {
@@ -115,3 +116,22 @@ export const StartRenewToken = () => {
     }
   };
 };
+//#endregion TOKEN
+
+//#region LOGOUT
+// restaura el estado inicial
+const logout = () => ({
+  type: types.authLogout,
+});
+
+// Elimina el token del localStorage
+export const startLogout = () => {
+  return async (dispatch) => {
+    dispatch(showLoading());
+    localStorage.clear();
+
+    dispatch(logout());
+    dispatch(hideLoading());
+  };
+};
+//#endregion LOGOUT

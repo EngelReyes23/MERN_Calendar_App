@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
+//
 import { startRegister } from '../../actions/auth';
 
 export const Register = () => {

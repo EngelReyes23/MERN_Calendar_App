@@ -20,6 +20,7 @@ const localizer = momentLocalizer(moment);
 export const CalendarScreen = () => {
   //#region Redux
   const {
+    auth: { name },
     ui: { isModalOpen },
     calendar: { eventList, activeEvent },
   } = useSelector((state) => state);
@@ -80,7 +81,7 @@ export const CalendarScreen = () => {
 
   return (
     <div>
-      <Navbar />
+      <Navbar name={name} />
       <div
         className='container'
         onKeyDown={({ code }) => {

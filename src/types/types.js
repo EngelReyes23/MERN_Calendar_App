@@ -13,9 +13,8 @@ export const types = {
 
   // Auth
   authLogin: '[auth] Login',
-  authChecking: '[auth] Checking',
+  authLogout: '[auth] Logout',
   authStartLogin: '[auth] Start Login',
-  authStartLogout: '[auth] Start Logout',
   authStartRegister: '[auth] Start Register',
   authStartRenewToken: '[auth] Start Renew Token',
 };
