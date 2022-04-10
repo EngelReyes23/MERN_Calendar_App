@@ -2,6 +2,7 @@ import Swal from 'sweetalert2';
 //
 import { axiosClient } from '../helpers/httpClient';
 import { types } from '../types/types';
+import { hideLoading, showLoading } from './ui';
 
 // Autentica al usuario en el estado local
 const login = (userInfo) => ({
@@ -12,6 +13,8 @@ const login = (userInfo) => ({
 // Inicia el proceso del login en el servidor
 export const startLogin = (email, password) => {
   return async (dispatch) => {
+    dispatch(showLoading());
+
     try {
       const { data } = await axiosClient.post('/auth', {
         email,
@@ -36,6 +39,8 @@ export const startLogin = (email, password) => {
     } catch (error) {
       console.log(error);
       Swal.fire('Error', 'Error al iniciar sesión', 'error');
+    } finally {
+      dispatch(hideLoading());
     }
   };
 };

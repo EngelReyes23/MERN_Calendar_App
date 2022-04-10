@@ -2,10 +2,10 @@ import './loading.css';
 
 export const Loading = () => (
   <div className='loadingContainer'>
-    <div class='loading'>
-      <div class='arc'></div>
-      <div class='arc'></div>
-      <div class='arc'></div>
+    <div className='loading'>
+      <div className='arc'></div>
+      <div className='arc'></div>
+      <div className='arc'></div>
     </div>
   </div>
 );

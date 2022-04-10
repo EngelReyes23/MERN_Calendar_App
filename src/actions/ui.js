@@ -9,3 +9,13 @@ export const openModal = () => ({
 export const closeModal = () => ({
   type: types.uiCloseModal,
 });
+
+// Muestra el loading
+export const showLoading = () => ({
+  type: types.uiShowLoading,
+});
+
+// Oculta el loading
+export const hideLoading = () => ({
+  type: types.uiHideLoading,
+});

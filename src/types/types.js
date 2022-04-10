@@ -2,6 +2,8 @@ export const types = {
   // UI
   uiOpenModal: '[ui] Open Modal',
   uiCloseModal: '[ui] Close Modal',
+  uiHideLoading: '[ui] Hide Loading',
+  uiShowLoading: '[ui] Show Loading',
 
   // calendar
   calendarAddEvent: '[calendar] Add Event',
