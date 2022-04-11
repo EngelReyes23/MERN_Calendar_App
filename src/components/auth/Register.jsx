@@ -14,7 +14,6 @@ export const Register = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    //  dispatch()
     if (data.password !== data.confirmPassword) {
       Swal.fire('Error', 'Las contraseñas no coinciden', 'error');
       return;
@@ -33,6 +32,7 @@ export const Register = () => {
               {errors.name.message}
             </div>
           )}
+
           <input
             type='text'
             className={`form-control ${errors.name && 'is-invalid'}`}
@@ -45,12 +45,14 @@ export const Register = () => {
             })}
           />
         </div>
+
         <div className='form-group'>
           {errors.email && (
             <div className='invalid-feedback d-block mb-1 text-white'>
               {errors.email.message}
             </div>
           )}
+
           <input
             type='email'
             className={`form-control ${errors.email && 'is-invalid'}`}
@@ -63,12 +65,14 @@ export const Register = () => {
             })}
           />
         </div>
+
         <div className='form-group'>
           {errors.password && (
             <div className='invalid-feedback d-block mb-1 text-white'>
               {errors.password.message}
             </div>
           )}
+
           <input
             type='password'
             className={`form-control ${errors.password && 'is-invalid'}`}
@@ -92,6 +96,7 @@ export const Register = () => {
               {errors.confirmPassword.message}
             </div>
           )}
+
           <input
             type='password'
             className={`form-control ${errors.password && 'is-invalid'}`}

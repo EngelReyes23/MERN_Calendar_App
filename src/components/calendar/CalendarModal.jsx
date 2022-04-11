@@ -118,6 +118,7 @@ export const CalendarModal = () => {
     >
       <h1> {activeEvent ? 'Editar evento' : 'Nuevo evento'} </h1>
       <hr />
+
       <form className='container' onSubmit={handleSubmit(onSubmit)}>
         <div className='form-group'>
           <label>Fecha y hora inicio</label>
@@ -157,6 +158,7 @@ export const CalendarModal = () => {
               },
             })}
           />
+
           <small
             className={`form-text ${
               errors.title ? 'text-danger' : 'text-muted'
@@ -174,6 +176,7 @@ export const CalendarModal = () => {
             rows='5'
             {...register('notes')}
           ></textarea>
+
           <small
             id='emailHelp'
             className={`form-text ${
