@@ -1,6 +1,6 @@
 import Swal from 'sweetalert2';
 //
-import { axiosClient } from '../helpers/httpClient';
+import { axiosInstance } from '../helpers/axiosInstance';
 import { types } from '../types/types';
 import { hideLoading, showLoading } from './ui';
 
@@ -17,7 +17,7 @@ export const startLogin = (email, password) => {
     dispatch(showLoading());
 
     try {
-      const { data } = await axiosClient.post('/auth', {
+      const { data } = await axiosInstance.post('/auth', {
         email,
         password,
       });
@@ -54,7 +54,7 @@ export const startRegister = (userData) => {
     dispatch(showLoading());
 
     try {
-      const { data } = await axiosClient.post('/auth/register', userData);
+      const { data } = await axiosInstance.post('/auth/register', userData);
 
       if (data.ok) {
         // Guarda el token en el localStorage
@@ -68,7 +68,6 @@ export const startRegister = (userData) => {
             name: data.name,
           })
         );
-        Swal.fire('Registro exitoso', '', 'success');
       }
     } catch (error) {
       const msg = error.response.data.msg;
@@ -88,7 +87,7 @@ export const StartRenewToken = () => {
       // Obtiene el token del localStorage
       const token = localStorage.getItem('token') || '';
 
-      const { data } = await axiosClient.get('/auth/renewToken', {
+      const { data } = await axiosInstance.get('/auth/renewToken', {
         headers: {
           'x-token': token,
         },

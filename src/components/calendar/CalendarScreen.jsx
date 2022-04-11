@@ -1,11 +1,15 @@
 import moment from 'moment';
 import 'moment/locale/es';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 //
-import { eventDelete, eventSetActive } from '../../actions/calendar';
+import {
+  eventDelete,
+  eventSetActive,
+  startGetEvents,
+} from '../../actions/calendar';
 import { openModal } from '../../actions/ui';
 import { messages } from '../../helpers/calendar-messages-es';
 import { AddNewFab } from '../ui/AddNewFab';
@@ -20,7 +24,7 @@ const localizer = momentLocalizer(moment);
 export const CalendarScreen = () => {
   //#region Redux
   const {
-    auth: { name },
+    auth: { name, uid },
     ui: { isModalOpen },
     calendar: { eventList, activeEvent },
   } = useSelector((state) => state);
@@ -34,6 +38,10 @@ export const CalendarScreen = () => {
   );
   //#endregion State
 
+  useEffect(() => {
+    dispatch(startGetEvents());
+  }, []);
+
   //#region Métodos para los eventos del calendario
   const onDoubleClick = () => {
     dispatch(openModal());
@@ -41,7 +49,7 @@ export const CalendarScreen = () => {
 
   // Establece el evento activo en null cuando se selecciona otra casilla
   const onSelectSlot = (e) => {
-    dispatch(eventSetActive(null));
+    activeEvent !== null && dispatch(eventSetActive(null));
   };
 
   // Establece el evento activo
@@ -70,9 +78,10 @@ export const CalendarScreen = () => {
 
   const eventStyleGetter = (event) => {
     const style = {
-      backgroundColor: event.bgColor,
+      backgroundColor: uid === event.user._id ? 'royalblue' : 'crimson',
       borderRadius: '0px',
       opacity: 0.8,
+      cursor: 'pointer',
       color: 'white',
     };
 

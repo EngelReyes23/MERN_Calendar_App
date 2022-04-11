@@ -186,7 +186,7 @@ export const CalendarModal = () => {
 
         <button type='submit' className='btn btn-outline-primary btn-block'>
           <i className='far fa-save'></i>
-          <span> Guardar</span>
+          <span>Guardar</span>
         </button>
       </form>
     </Modal>
