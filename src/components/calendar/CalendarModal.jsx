@@ -7,9 +7,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 //
 import {
-  eventAddNew,
   eventSetActive,
   eventUpdate,
+  startAddNew,
 } from '../../actions/calendar';
 import { closeModal } from '../../actions/ui';
 
@@ -87,24 +87,10 @@ export const CalendarModal = () => {
         return;
       }
 
-      if (!activeEvent) {
-        dispatch(
-          eventAddNew({
-            ...data,
-            id: data.id || new Date().getTime(),
-            user: {
-              _id: '5e9f9f9f9f9f9f9f9f9f9f9',
-              name: 'Engel Reyes',
-            },
-          })
-        );
-      } else {
-        dispatch(eventUpdate(data));
-      }
+      !activeEvent ? dispatch(startAddNew(data)) : dispatch(eventUpdate(data));
+
       handleCloseModal();
-    } else {
-      Swal.fire('Error', 'Fechas no válidas', 'error');
-    }
+    } else Swal.fire('Error', 'Fechas no válidas', 'error');
   };
   //#endregion Methods
 

@@ -1,16 +1,12 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  BrowserRouter as Router,
-  Navigate,
-  Route,
-  Routes,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 //
 import { StartRenewToken } from '../actions/auth';
 import { LoginScreen } from '../components/auth/LoginScreen';
 import { CalendarScreen } from '../components/calendar/CalendarScreen';
 import { Loading } from '../components/ui/Loading';
+import { NotFound } from '../components/ui/NotFound';
 import { PrivateRoute } from './PrivateRoute';
 import { PublicRoute } from './PublicRoute';
 
@@ -48,7 +44,7 @@ export const AppRouter = () => {
         />
 
         {/* Redirect */}
-        <Route path='*' element={<Navigate to='/' />} />
+        <Route path='*' element={<NotFound />} />
       </Routes>
     </Router>
   );
