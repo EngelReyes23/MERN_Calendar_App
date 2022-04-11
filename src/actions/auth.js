@@ -83,6 +83,7 @@ export const startRegister = (userData) => {
 // Inicia el proceso de renovación de token
 export const StartRenewToken = () => {
   return async (dispatch) => {
+    dispatch(checking());
     try {
       // Obtiene el token del localStorage
       const token = localStorage.getItem('token') || '';
@@ -108,6 +109,8 @@ export const StartRenewToken = () => {
       }
     } catch (error) {
       console.log(error.response.data.msg);
+    } finally {
+      dispatch(checked());
     }
   };
 };
@@ -127,6 +130,10 @@ export const startLogout = () => {
 
     dispatch(logout());
     dispatch(hideLoading());
+    dispatch(checked());
   };
 };
 //#endregion LOGOUT
+
+const checking = () => ({ type: types.authChecking });
+const checked = () => ({ type: types.authChecked });

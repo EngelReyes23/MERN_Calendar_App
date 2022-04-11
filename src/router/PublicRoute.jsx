@@ -1,5 +1,5 @@
 import { Navigate } from 'react-router-dom';
 
-export const PublicRoute = ({ isChecking, component: Component }) => {
-  return isChecking ? <Navigate to='/' /> : <Component />;
+export const PublicRoute = ({ isLogged, component: Component }) => {
+  return isLogged ? <Navigate to='/' /> : <Component />;
 };

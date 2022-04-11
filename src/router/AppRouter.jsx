@@ -14,7 +14,7 @@ export const AppRouter = () => {
   //#region Redux
   const dispatch = useDispatch();
   const {
-    auth: { isChecking },
+    auth: { isChecking, isLogged },
     ui: { isLoading },
   } = useSelector((state) => state);
   //#endregion Redux
@@ -22,6 +22,8 @@ export const AppRouter = () => {
   useEffect(() => {
     dispatch(StartRenewToken());
   }, []);
+
+  if (isChecking) return <Loading />;
 
   return (
     <Router>
@@ -32,15 +34,13 @@ export const AppRouter = () => {
         <Route
           path='/'
           element={
-            <PrivateRoute isChecking={isChecking} component={CalendarScreen} />
+            <PrivateRoute isLogged={isLogged} component={CalendarScreen} />
           }
         />
 
         <Route
           path='/login'
-          element={
-            <PublicRoute isChecking={isChecking} component={LoginScreen} />
-          }
+          element={<PublicRoute isLogged={isLogged} component={LoginScreen} />}
         />
 
         {/* Redirect */}
