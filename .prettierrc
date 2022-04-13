@@ -5,6 +5,11 @@
   "bracketSpacing": true,
   "jsxSingleQuote": true,
   "trailingComma": "es5",
+<<<<<<< HEAD
   "arrowParens": "always",
   "bracketSameLine": false
+=======
+  "bracketSameLine": false,
+  "arrowParens": "always"
+>>>>>>> b090d572690a3a201d57e8e7fb14dfa890119933
 }
