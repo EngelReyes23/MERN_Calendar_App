@@ -22,7 +22,7 @@ moment.locale('es');
 const localizer = momentLocalizer(moment);
 
 export const CalendarScreen = () => {
-  //#region Redux
+  // #region Redux
   const {
     auth: { name, uid },
     ui: { isModalOpen },
@@ -30,19 +30,19 @@ export const CalendarScreen = () => {
   } = useSelector((state) => state);
 
   const dispatch = useDispatch();
-  //#endregion Redux
+  // #endregion Redux
 
-  //#region State
+  // #region State
   const [calendarView, setCalendarView] = useState(
     localStorage.getItem('calendarView') || 'month'
   );
-  //#endregion State
+  // #endregion State
 
   useEffect(() => {
     dispatch(startGetEvents());
   }, []);
 
-  //#region Métodos para los eventos del calendario
+  // #region Métodos para los eventos del calendario
   const onDoubleClick = () => {
     dispatch(openModal());
   };
@@ -74,7 +74,7 @@ export const CalendarScreen = () => {
       result.isConfirmed && dispatch(eventDelete());
     });
   };
-  //#endregion Métodos para los eventos del calendario
+  // #endregion Métodos para los eventos del calendario
 
   const eventStyleGetter = (event) => {
     const style = {

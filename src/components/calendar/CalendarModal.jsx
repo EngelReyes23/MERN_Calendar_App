@@ -29,13 +29,13 @@ Modal.setAppElement('#root');
 const dateNow = moment().minutes(0).seconds(0).add(1, 'hours');
 
 export const CalendarModal = () => {
-  //#region Redux
+  // #region Redux
   const dispatch = useDispatch();
 
   const { activeEvent } = useSelector((state) => state.calendar);
-  //#endregion Redux
+  // #endregion Redux
 
-  //#region States
+  // #region States
   // Fecha inicial para el input
   const [startDate, setStartDate] = useState(dateNow.toDate());
 
@@ -57,9 +57,9 @@ export const CalendarModal = () => {
       end: endDate,
     },
   });
-  //#endregion States
+  // #endregion States
 
-  //#region useEffect
+  // #region useEffect
   useEffect(() => {
     if (activeEvent) {
       reset(activeEvent);
@@ -67,9 +67,9 @@ export const CalendarModal = () => {
       setEndDate(activeEvent.end);
     }
   }, [activeEvent, reset]);
-  //#endregion useEffect
+  // #endregion useEffect
 
-  //#region Methods
+  // #region Methods
   const handleCloseModal = () => {
     dispatch(eventSetActive(null));
     dispatch(closeModal());
@@ -92,9 +92,9 @@ export const CalendarModal = () => {
       handleCloseModal();
     } else Swal.fire('Error', 'Fechas no válidas', 'error');
   };
-  //#endregion Methods
+  // #endregion Methods
 
-  //#region Handles
+  // #region Handles
   const handleStartDateChange = (e) => {
     setStartDate(e);
     setValue('start', e);
@@ -104,7 +104,7 @@ export const CalendarModal = () => {
     setEndDate(e);
     setValue('end', e);
   };
-  //#endregion Handles
+  // #endregion Handles
 
   return (
     <Modal

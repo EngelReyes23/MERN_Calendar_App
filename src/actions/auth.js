@@ -4,7 +4,7 @@ import { axiosInstance } from '../helpers/axiosInstance';
 import { types } from '../types/types';
 import { hideLoading, showLoading } from './ui';
 
-//#region LOGIN
+// #region LOGIN
 // Autentica al usuario en el estado local
 const login = (userInfo) => ({
   type: types.authLogin,
@@ -45,9 +45,9 @@ export const startLogin = (email, password) => {
     }
   };
 };
-//#endregion LOGIN
+// #endregion LOGIN
 
-//#region REGISTER
+// #region REGISTER
 // Inicia el proceso de registro en el servidor
 export const startRegister = (userData) => {
   return async (dispatch) => {
@@ -77,9 +77,9 @@ export const startRegister = (userData) => {
     }
   };
 };
-//#endregion REGISTER
+// #endregion REGISTER
 
-//#region TOKEN
+// #region TOKEN
 // Inicia el proceso de renovación de token
 export const StartRenewToken = () => {
   return async (dispatch) => {
@@ -114,9 +114,9 @@ export const StartRenewToken = () => {
     }
   };
 };
-//#endregion TOKEN
+// #endregion TOKEN
 
-//#region LOGOUT
+// #region LOGOUT
 // restaura el estado inicial
 const logout = () => ({
   type: types.authLogout,
@@ -133,7 +133,7 @@ export const startLogout = () => {
     dispatch(checked());
   };
 };
-//#endregion LOGOUT
+// #endregion LOGOUT
 
 const checking = () => ({ type: types.authChecking });
 const checked = () => ({ type: types.authChecked });

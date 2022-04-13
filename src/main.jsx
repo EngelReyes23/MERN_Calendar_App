@@ -1,4 +1,3 @@
-import React from 'react';
 import 'react-big-calendar/lib/css/react-big-calendar.css'; // React-BigCalendar css
 import 'react-calendar/dist/Calendar.css'; // React-DateTimePicker css
 import 'react-clock/dist/Clock.css'; // React-DateTimePicker css

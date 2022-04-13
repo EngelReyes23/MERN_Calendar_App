@@ -11,13 +11,13 @@ import { PrivateRoute } from './PrivateRoute';
 import { PublicRoute } from './PublicRoute';
 
 export const AppRouter = () => {
-  //#region Redux
+  // #region Redux
   const dispatch = useDispatch();
   const {
     auth: { isChecking, isLogged },
     ui: { isLoading },
   } = useSelector((state) => state);
-  //#endregion Redux
+  // #endregion Redux
 
   useEffect(() => {
     dispatch(StartRenewToken());
