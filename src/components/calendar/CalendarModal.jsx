@@ -171,7 +171,7 @@ export const CalendarModal = () => {
         <div className='form-group'>
           <textarea
             type='text'
-            className={`form-control`}
+            className={'form-control'}
             placeholder='Notas'
             rows='5'
             {...register('notes')}
