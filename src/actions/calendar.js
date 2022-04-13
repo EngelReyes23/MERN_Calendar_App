@@ -67,7 +67,7 @@ export const startGetEvents = () => {
         },
       });
 
-      /* Eliminando campos innecesarios y 
+      /* Eliminando campos innecesarios y
         convirtiendo los strings a tipo Date */
       const eventList = data.eventList.map((event) => {
         delete event.__v;
