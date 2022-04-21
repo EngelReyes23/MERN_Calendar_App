@@ -8,8 +8,8 @@ import Swal from 'sweetalert2';
 //
 import {
   eventSetActive,
-  eventUpdate,
   startAddNew,
+  startUpdateEvent,
 } from '../../actions/calendar';
 import { closeModal } from '../../actions/ui';
 
@@ -87,7 +87,9 @@ export const CalendarModal = () => {
         return;
       }
 
-      !activeEvent ? dispatch(startAddNew(data)) : dispatch(eventUpdate(data));
+      !activeEvent
+        ? dispatch(startAddNew(data))
+        : dispatch(startUpdateEvent(data));
 
       handleCloseModal();
     } else Swal.fire('Error', 'Fechas no válidas', 'error');

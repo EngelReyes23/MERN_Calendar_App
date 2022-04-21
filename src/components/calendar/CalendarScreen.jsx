@@ -6,8 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 //
 import {
-  eventDelete,
   eventSetActive,
+  startDeleteEvent,
   startGetEvents,
 } from '../../actions/calendar';
 import { openModal } from '../../actions/ui';
@@ -71,7 +71,7 @@ export const CalendarScreen = () => {
       icon: 'warning',
       showCancelButton: true,
     }).then((result) => {
-      result.isConfirmed && dispatch(eventDelete());
+      result.isConfirmed && dispatch(startDeleteEvent());
     });
   };
   // #endregion Métodos para los eventos del calendario

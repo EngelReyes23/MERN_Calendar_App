@@ -1,6 +1,7 @@
 import Swal from 'sweetalert2';
 //
 import { axiosInstance } from '../helpers/axiosInstance';
+import { getToken } from '../helpers/getToken';
 import { types } from '../types/types';
 import { hideLoading, showLoading } from './ui';
 
@@ -16,7 +17,7 @@ export const startAddNew = (eventData) => {
     dispatch(showLoading());
 
     // Obteniendo el token
-    const token = localStorage.getItem('token') || '';
+    const token = getToken();
 
     const { uid, name } = getState().auth;
 
@@ -57,8 +58,8 @@ export const startGetEvents = () => {
   return async (dispatch) => {
     dispatch(showLoading());
 
-    // Obteniendo el token
-    const token = localStorage.getItem('token') || '';
+    /// Obteniendo el token
+    const token = getToken();
 
     try {
       const { data } = await axiosInstance.get('/events', {
@@ -95,12 +96,78 @@ export const eventSetActive = (event) => ({
 });
 
 // Actualiza el evento seleccionado en el estado local
-export const eventUpdate = (event) => ({
+const eventUpdate = (event) => ({
   type: types.calendarUpdateEvent,
   payload: event,
 });
 
+// Actualiza el evento en la base de datos
+export const startUpdateEvent = (event) => {
+  return async (dispatch) => {
+    dispatch(showLoading());
+    try {
+      // Obteniendo el token
+      const token = getToken();
+      console.log('🚀 ~ return ~ token', token);
+
+      const { data } = await axiosInstance.put(`/events/${event._id}`, event, {
+        headers: { 'x-token': token },
+      });
+
+      if (data.ok) {
+        dispatch(eventUpdate(event)); // Actualizando el evento en el estado local
+        Swal.fire(
+          'Success',
+          'El evento se ha actualizado correctamente',
+          'success'
+        );
+      } else {
+        Swal.fire('Error', data.msg, 'error');
+      }
+    } catch (error) {
+      console.log(error.response);
+      const msg = error.response.data.msg;
+      Swal.fire('Error', msg, 'error');
+    } finally {
+      dispatch(hideLoading());
+    }
+  };
+};
+
 // Elimina el evento seleccionado del estado local
-export const eventDelete = () => ({
+const eventDelete = () => ({
   type: types.calendarDeleteEvent,
 });
+
+// Elimina el evento seleccionado de la base de datos
+export const startDeleteEvent = () => {
+  return async (dispatch, getState) => {
+    dispatch(showLoading());
+    try {
+      // Obteniendo el id del evento
+      const { _id } = getState().calendar.activeEvent;
+
+      // Obteniendo el token
+      const token = getToken();
+
+      const { data } = await axiosInstance.delete(`/events/${_id}`, {
+        headers: { 'x-token': token },
+      });
+
+      if (data.ok) {
+        dispatch(eventDelete()); // Eliminando el evento del estado local
+        Swal.fire(
+          'Success',
+          'El evento se ha eliminado correctamente',
+          'success'
+        );
+      } else Swal.fire('Error', data.msg, 'error');
+    } catch (error) {
+      console.log(error.response);
+      const msg = error.response.data.msg;
+      Swal.fire('Error', msg, 'error');
+    } finally {
+      dispatch(hideLoading());
+    }
+  };
+};
