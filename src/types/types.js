@@ -6,6 +6,7 @@ export const types = {
   uiShowLoading: '[ui] Show Loading',
 
   // calendar
+  calendarLogout: '[calendar] Logout',
   calendarAddEvent: '[calendar] Add Event',
   calendarDeleteEvent: '[calendar] Delete Event',
   calendarUpdateEvent: '[calendar] Update Event',

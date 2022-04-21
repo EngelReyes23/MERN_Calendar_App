@@ -69,14 +69,25 @@ export const CalendarModal = () => {
   }, [activeEvent, reset]);
   // #endregion useEffect
 
-  // #region Methods
+  // #region Handles
   const handleCloseModal = () => {
     dispatch(eventSetActive(null));
     dispatch(closeModal());
   };
 
+  const handleStartDateChange = (e) => {
+    setStartDate(e);
+    setValue('start', e);
+  };
+
+  const handleEndDateChange = (e) => {
+    setEndDate(e);
+    setValue('end', e);
+  };
+  // #endregion Handles
+
+  // #region Methods
   const onSubmit = (data) => {
-    // TODO: implementar de mejor manera
     if (data.end && data.start) {
       if (moment(data.start).isSameOrAfter(data.end)) {
         Swal.fire(
@@ -95,18 +106,6 @@ export const CalendarModal = () => {
     } else Swal.fire('Error', 'Fechas no válidas', 'error');
   };
   // #endregion Methods
-
-  // #region Handles
-  const handleStartDateChange = (e) => {
-    setStartDate(e);
-    setValue('start', e);
-  };
-
-  const handleEndDateChange = (e) => {
-    setEndDate(e);
-    setValue('end', e);
-  };
-  // #endregion Handles
 
   return (
     <Modal

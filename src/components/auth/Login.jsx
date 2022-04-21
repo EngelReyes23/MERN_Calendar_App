@@ -10,12 +10,7 @@ export const Login = () => {
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm({
-    defaultValues: {
-      email: 'engelreyes23@gmail.com',
-      password: 'Reyes123',
-    },
-  });
+  } = useForm();
 
   const onSubmit = ({ email, password }) => {
     dispatch(startLogin(email, password));

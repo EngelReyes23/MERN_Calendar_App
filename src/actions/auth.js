@@ -2,6 +2,7 @@ import Swal from 'sweetalert2';
 //
 import { axiosInstance } from '../helpers/axiosInstance';
 import { types } from '../types/types';
+import { calendarLogout } from './calendar';
 import { hideLoading, showLoading } from './ui';
 
 // #region LOGIN
@@ -24,10 +25,10 @@ export const startLogin = (email, password) => {
 
       // Si el usuario se autentica correctamente
       if (data.ok) {
-        // Guarda el token en el localStorage
-        localStorage.setItem('token', data.token);
+        // Guarda el token en el sessionStorage
+        sessionStorage.setItem('token', data.token);
         // Guarda la fecha del creación del token
-        localStorage.setItem('DateCreationToken', new Date().getTime());
+        sessionStorage.setItem('DateCreationToken', new Date().getTime());
 
         // Inicia el proceso de autenticación en el estado local
         dispatch(
@@ -57,10 +58,10 @@ export const startRegister = (userData) => {
       const { data } = await axiosInstance.post('/auth/register', userData);
 
       if (data.ok) {
-        // Guarda el token en el localStorage
-        localStorage.setItem('token', data.token);
+        // Guarda el token en el sessionStorage
+        sessionStorage.setItem('token', data.token);
         // Guarda la fecha del creación del token
-        localStorage.setItem('DateCreationToken', new Date().getTime());
+        sessionStorage.setItem('DateCreationToken', new Date().getTime());
 
         dispatch(
           login({
@@ -85,8 +86,8 @@ export const StartRenewToken = () => {
   return async (dispatch) => {
     dispatch(checking());
     try {
-      // Obtiene el token del localStorage
-      const token = localStorage.getItem('token') || '';
+      // Obtiene el token del sessionStorage
+      const token = sessionStorage.getItem('token') || '';
 
       const { data } = await axiosInstance.get('/auth/renewToken', {
         headers: {
@@ -95,10 +96,10 @@ export const StartRenewToken = () => {
       });
 
       if (data) {
-        // Guarda el token en el localStorage
-        localStorage.setItem('token', data.token);
+        // Guarda el token en el sessionStorage
+        sessionStorage.setItem('token', data.token);
         // Guarda la fecha del creación del token
-        localStorage.setItem('DateCreationToken', new Date().getTime());
+        sessionStorage.setItem('DateCreationToken', new Date().getTime());
 
         dispatch(
           login({
@@ -117,18 +118,19 @@ export const StartRenewToken = () => {
 // #endregion TOKEN
 
 // #region LOGOUT
-// restaura el estado inicial
+// Restaura el estado inicial
 const logout = () => ({
   type: types.authLogout,
 });
 
-// Elimina el token del localStorage
+// Elimina el token del sessionStorage
 export const startLogout = () => {
   return async (dispatch) => {
     dispatch(showLoading());
-    localStorage.clear();
+    sessionStorage.clear();
 
     dispatch(logout());
+    dispatch(calendarLogout());
     dispatch(hideLoading());
     dispatch(checked());
   };

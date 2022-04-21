@@ -108,7 +108,6 @@ export const startUpdateEvent = (event) => {
     try {
       // Obteniendo el token
       const token = getToken();
-      console.log('🚀 ~ return ~ token', token);
 
       const { data } = await axiosInstance.put(`/events/${event._id}`, event, {
         headers: { 'x-token': token },
@@ -171,3 +170,8 @@ export const startDeleteEvent = () => {
     }
   };
 };
+
+// Reinicia el estado local
+export const calendarLogout = () => ({
+  type: types.calendarLogout,
+});
